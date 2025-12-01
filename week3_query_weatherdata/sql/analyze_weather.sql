@@ -62,8 +62,8 @@ WHERE "Country/Region" = 'Sweden'; -- note the use of single and double quotatio
 SELECT 
   date_part('year', to_timestamp(sunriseTime)) AS year,
   date_part('month', to_timestamp(sunriseTime)) AS month,
-  MAX(to_timestamp(sunriseTime)) AS sunrise_largest_gap_date, -- MAX() will pick up the first row
-  MAX(to_timestamp(sunsetTime)) AS sunset_largest_gap_date, -- MAX() will pick up the first row
+  ARG_MAX(to_timestamp(sunriseTime), (sunsetTime-sunriseTime)), -- ARG_MAX() find the value of the first argument when the second argument is max
+  ARG_MAX(to_timestamp(sunsetTime), (sunsetTime-sunriseTime)),
   MAX(ROUND((sunsetTime-sunriseTime)/3600)) AS gap_hours,
 FROM staging.daily_weather_2020
 WHERE "Country/Region" = 'Sweden'
